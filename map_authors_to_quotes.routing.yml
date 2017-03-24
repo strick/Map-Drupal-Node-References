@@ -1,0 +1,7 @@
+hello.content:
+  path: '/map-authors-to-quotes'
+  defaults:
+    _controller: '\Drupal\map_authors_to_quotes\Controller\MapAuthorsToQuotesController::content'
+    _title: 'Map Athors to Quotes'
+  requirements:
+    _permission: 'access content'

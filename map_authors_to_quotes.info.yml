@@ -1,0 +1,6 @@
+name: Map Authors to Quotes Module
+description: Maps authors to quotes.
+package: Custom
+type: module
+version: 1.0
+core: 8.x
