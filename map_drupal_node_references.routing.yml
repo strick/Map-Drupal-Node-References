@@ -1,0 +1,14 @@
+mdnr.index:
+  path: '/map-drupal-node-references'
+  defaults:
+    _controller: '\Drupal\map_drupal_node_references\Controller\MapDrupalNodeReferencesController::index'
+    _title: 'Index'
+  requirements:
+    _permission: 'access content'
+mdnr.content:
+  path: '/map-drupal-node-references/authors-to-quotes'
+  defaults:
+    _controller: '\Drupal\map_drupal_node_references\Controller\MapDrupalNodeReferencesController::authorsToQuotes'
+    _title: 'Authors to Quotes'
+  requirements:
+    _permission: 'access content'
