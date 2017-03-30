@@ -14,7 +14,7 @@ class MapDrupalNodeReferencesController {
 		
 		 return array(
 			'#markup' => '<p><a href="/map-drupal-node-references/authors-to-quotes">' . t('Map Authors to Quotes') . '</a></p>',
-		 );
+		);
 	}
 	// TODO: Make this accept start and end counts to proccess.
 	public function authorsToQuotes($limit, $startNode) {
@@ -27,8 +27,8 @@ class MapDrupalNodeReferencesController {
 
 		$query = $db->select('content_type_quote', 'ctq');
 		$query->fields('ctq', array('nid', 'field_author_nid'));
-        $query->orderBy('nid');
-		$query->range($limit);
+		$query->orderBy('nid');
+		$query->range(0, $limit);
 
 		// If start node is given, then only grab quotes from that point forward.
 		if($startNode > 0)
@@ -44,9 +44,9 @@ class MapDrupalNodeReferencesController {
 			$node->save();
 		}
 		
-	    return array(
-	      	'#type' => 'markup',
-	      	'#markup' => t('Ended on ' . $quote->nid),
-	    );
-  	}
+		return array(
+			'#type' => 'markup',
+			'#markup' => t('Ended on ' . $quote->nid),
+		);
+	}
 }
