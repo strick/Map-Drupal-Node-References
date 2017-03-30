@@ -6,9 +6,11 @@ map_drupal_node_references.index:
   requirements:
     _permission: 'access content'
 map_drupal_node_references.authorsToQuotes:
-  path: '/map-drupal-node-references/authors-to-quotes'
+  path: '/map-drupal-node-references/authors-to-quotes/{limit}/{startNode}'
   defaults:
     _controller: '\Drupal\map_drupal_node_references\Controller\MapDrupalNodeReferencesController::authorsToQuotes'
     _title: 'Authors to Quotes'
+    limit: 1000
+    startNode: 0
   requirements:
     _permission: 'access content'

@@ -17,9 +17,7 @@ class MapDrupalNodeReferencesController {
 		 );
 	}
 	// TODO: Make this accept start and end counts to proccess.
-	public function authorsToQuotes() {
-		
-		$markup = "";
+	public function authorsToQuotes($limit, $startNode) {
 
 		// Switch to external database
 		\Drupal\Core\Database\Database::setActiveConnection('gtt6');
@@ -29,22 +27,26 @@ class MapDrupalNodeReferencesController {
 
 		$query = $db->select('content_type_quote', 'ctq');
 		$query->fields('ctq', array('nid', 'field_author_nid'));
-		//$query->range(1,10);
+        $query->orderBy('nid');
+		$query->range($limit);
+
+		// If start node is given, then only grab quotes from that point forward.
+		if($startNode > 0)
+			$query->condition('nid', $startNode, '>=');
+
 		$quotes = $query->execute()->fetchAll();
 
-		$count = 0;
 		// Switch back
 		\Drupal\Core\Database\Database::setActiveConnection();
 		foreach($quotes as $quote){
 			$node = \Drupal::entityTypeManager()->getStorage('node')->load($quote->nid);
 			$node->field_author->target_id = $quote->field_author_nid;
 			$node->save();
-			$count++;
 		}
 		
-	    	return array(
-	      		'#type' => 'markup',
-	      		'#markup' => t($count),
-	    	);
+	    return array(
+	      	'#type' => 'markup',
+	      	'#markup' => t('Ended on ' . $quote->nid),
+	    );
   	}
 }
