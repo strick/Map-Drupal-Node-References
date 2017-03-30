@@ -1,6 +1,6 @@
-mdnr.admin:
-  title: 'H module settings'
+map_drupal_node_references.admin:
+  title: 'A module settings'
   description: 'example of how to make an admin settings page link'
   parent: system.admin_config_development
-  route_name: mdnr.index
+  route_name: map_drupal_node_references.index
   weight: 100
