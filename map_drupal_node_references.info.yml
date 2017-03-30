@@ -1,0 +1,6 @@
+name: Map Drupal Node References
+description: Maps nodes to other nodes
+package: Custom
+type: module
+version: 1.0
+core: 8.x
