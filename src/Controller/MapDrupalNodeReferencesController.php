@@ -35,6 +35,8 @@ class MapDrupalNodeReferencesController {
 		$finder = new Finder();
 		$finder->files()->name('quote_id.txt');
 		
+		
+		try {
 		// Get the last file id.
 		foreach($finder as $file) {
 			
@@ -45,9 +47,18 @@ class MapDrupalNodeReferencesController {
 			
 			break;
 		}
+		}
+		catch(Exception $e){
+			var_dump($e);
+			exit;
+		}
 		
-		echo $startNode; exit;
+		return array(
+			'#type' => 'markup',
+			'#markup' => t('Ended on ' . $startNode),
+		);
 		
+	
 
 		// If start node is given, then only grab quotes from that point forward.
 		if($startNode > 0)
