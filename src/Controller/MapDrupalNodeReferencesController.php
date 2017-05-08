@@ -33,7 +33,7 @@ class MapDrupalNodeReferencesController {
 		
 		// Check the file to see what node to start on
 		$finder = new Finder();
-		$finder->files()->name('quote_id.txt');
+		$finder->in('/var/www/greatthoughtstreasury.com/config/')->files()->name('quote_id.txt');
 		
 		// Get the last file id.
 		foreach($finder as $file) {
@@ -45,9 +45,6 @@ class MapDrupalNodeReferencesController {
 			
 			break;
 		}
-		
-		echo $startNode; exit;
-		
 
 		// If start node is given, then only grab quotes from that point forward.
 		if($startNode > 0)
@@ -62,17 +59,14 @@ class MapDrupalNodeReferencesController {
 			$node->field_author->target_id = $quote->field_author_nid;
 			$node->save();
 		}
-		/*
+
 		// Set the next author id.
 		foreach($finder as $file) {
 			
-			$quote_id = $file->set;
-			
-			// Set the start node to this id
-			$startNode = $quote_id;
+			$quote_id = $file->openFile('w')->fwrite($quote->nid);
 			
 			break;
-		}*/
+		}
 		
 		// Worked for 10 minutes.
 		
