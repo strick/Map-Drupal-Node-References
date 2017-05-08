@@ -7,6 +7,7 @@ namespace Drupal\map_drupal_node_references\Controller;
 
 use Drupal\Core\DrupalKernel;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Finder\Finder;
 
 class MapDrupalNodeReferencesController {
 	
@@ -29,6 +30,24 @@ class MapDrupalNodeReferencesController {
 		$query->fields('ctq', array('nid', 'field_author_nid'));
 		$query->orderBy('nid');
 		$query->range(0, $limit);
+		
+		// Check the file to see what node to start on
+		$finder = new Finder();
+		$finder->files()->name('quote_id.txt');
+		
+		// Get the last file id.
+		foreach($finder as $file) {
+			
+			$quote_id = $file->getContents();
+			
+			// Set the start node to this id
+			$startNode = $quote_id;
+			
+			break;
+		}
+		
+		echo $startNode; exit;
+		
 
 		// If start node is given, then only grab quotes from that point forward.
 		if($startNode > 0)
@@ -43,10 +62,25 @@ class MapDrupalNodeReferencesController {
 			$node->field_author->target_id = $quote->field_author_nid;
 			$node->save();
 		}
+		/*
+		// Set the next author id.
+		foreach($finder as $file) {
+			
+			$quote_id = $file->set;
+			
+			// Set the start node to this id
+			$startNode = $quote_id;
+			
+			break;
+		}*/
+		
+		// Worked for 10 minutes.
 		
 		return array(
 			'#type' => 'markup',
 			'#markup' => t('Ended on ' . $quote->nid),
 		);
+		
+		
 	}
 }
