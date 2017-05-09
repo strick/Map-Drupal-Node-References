@@ -10,7 +10,7 @@ map_drupal_node_references.authorsToQuotes:
   defaults:
     _controller: '\Drupal\map_drupal_node_references\Controller\MapDrupalNodeReferencesController::authorsToQuotes'
     _title: 'Authors to Quotes'
-    limit: 1000
+    limit: 5000
     startNode: 0
   requirements:
     _permission: 'access content'

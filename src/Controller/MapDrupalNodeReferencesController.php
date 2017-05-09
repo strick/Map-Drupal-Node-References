@@ -20,6 +20,8 @@ class MapDrupalNodeReferencesController {
 	// TODO: Make this accept start and end counts to proccess.
 	public function authorsToQuotes($limit, $startNode) {
 
+		$reload = true;
+
 		// Switch to external database
 		\Drupal\Core\Database\Database::setActiveConnection('gtt6');
 
@@ -54,10 +56,21 @@ class MapDrupalNodeReferencesController {
 
 		// Switch back
 		\Drupal\Core\Database\Database::setActiveConnection();
-		foreach($quotes as $quote){
-			$node = \Drupal::entityTypeManager()->getStorage('node')->load($quote->nid);
-			$node->field_author->target_id = $quote->field_author_nid;
-			$node->save();
+		try {
+			foreach($quotes as $quote){
+				$node = \Drupal::entityTypeManager()->getStorage('node')->load($quote->nid);
+				$node->field_author->target_id = $quote->field_author_nid;
+				$node->save();
+			}
+		}
+		catch(\Error $e){
+			$er = (new Finder())->in('/var/www/greatthoughtstreasury.com/config/')->files()->name('error_quotes.txt');
+			//	->getIterator()->current()
+			foreach($er as $ef)
+			$ef->openFile('a')->fwrite('Error on quote: ' . $quote->nid);
+
+			// Increase the NID by 1 so it will start on the next one.
+			$quote->nid++;
 		}
 
 		// Set the next author id.
@@ -67,12 +80,20 @@ class MapDrupalNodeReferencesController {
 			
 			break;
 		}
+
+		// If it ends on the samee node as the start node, complete.
+		if($startNode == $quote->nid)
+			$reload = false;
 		
 		// Worked for 10 minutes.
+		if($reload)
+			$markup = t('<script>window.location.href = "/map-drupal-node-references/authors-to-quotes";</script>');
+		else
+			$markup = t('Ended on ' . $quote->nid);
 		
 		return array(
 			'#type' => 'markup',
-			'#markup' => t('Ended on ' . $quote->nid),
+			'#markup' => $markup,
 		);
 		
 		
